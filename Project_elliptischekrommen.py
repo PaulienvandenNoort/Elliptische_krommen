@@ -1,7 +1,7 @@
 import math
 import copy
 
-class ElliptischeKromme:
+class ElliptischeKromme: HALLOHALLOTESTMORRIS :)
 
     def __init__(self,a,b,p):
         self.a = a
