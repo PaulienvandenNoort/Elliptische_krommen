@@ -249,3 +249,5 @@ class Punt_op_Montgomery_curve:
                     antwoord += self
             
             return antwoord 
+
+curve25519 = Montgomery_curve(1,486662,2**(255)-19)
