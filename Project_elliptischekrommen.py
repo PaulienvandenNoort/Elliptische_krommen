@@ -149,6 +149,7 @@ def BruteForce(p=Punt(),q=Punt()):
             return 'q = '+str(i)+' keer p'
         
 class Montgomery_curve:
+    """ definieert een Montgomery kromme, curve25519 is hier een speciaal geval van"""
 
     def __init__(self,b,a,p):
         self.a = a
@@ -165,6 +166,8 @@ class Montgomery_curve:
         return self.a == other.a and self.b == other.b and self.p == other.p
 
 class Punt_op_Montgomery_curve:
+    """ definieert de berekeningen die gedaan kunnen worden met Montgomery krommen, deze verschillen vooral
+    in de optelling van de berekeningen van de elliptische kromme zoals eerder gedefinieerd """
 
     def __init__(self,x=[],y=[],c=Montgomery_curve(0,0,2)):
         self.x = x #voer het punt oneindig in als Punt()
