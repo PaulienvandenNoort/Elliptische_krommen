@@ -150,7 +150,7 @@ def BruteForce(p=Punt(),q=Punt()):
         
 class Montgomery_curve:
 
-    def __init__(self,a,b,p):
+    def __init__(self,b,a,p):
         self.a = a
         self.b = b
         self.p = p
