@@ -60,8 +60,8 @@ class Punt:
         elif self.E != other.E:
             return 'Kan niet'
         
-        elif other == inverse_of(self, p):
-            return Punt() #punt bij zn inverse optellen geeft oneindig
+        #elif other == inverse_of(self, self.p):
+            #return Punt() #punt bij zn inverse optellen geeft oneindig
         elif self.x == other.x and self.y != other.y:
             return Punt() #twee punten die boven elkaar liggen optellen geeft oneindig
         elif self == other and self.y == 0:
@@ -87,17 +87,14 @@ class Punt:
         return new
 
     def vermenigvuldigen(self,n):
-        if self.E != other.E:
-            return 'Kan niet'
+        antwoord = self
+        if n == 0:
+            return 0
+        if n == 1:
+            return antwoord
         else:
-            antwoord = self
-            if n == 0:
-                return 0
-            if n == 1:
-                return antwoord
-            else:
-                for i in range(n-1):
-                    antwoord += self
+            for i in range(n-1):
+                antwoord += self
             
             return antwoord
 
@@ -146,3 +143,9 @@ def inverse_of(n, p):
     else:
         return x % p
 
+def BruteForce(p=Punt(),q=Punt()):
+    n = p.p
+    for i in range(1,n):
+        pnext = p.vermenigvuldigen(i)
+        if pnext==q:
+            return 'q = '+str(i)+' keer p'
