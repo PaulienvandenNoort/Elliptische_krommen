@@ -60,10 +60,8 @@ class Punt:
         elif self.E != other.E:
             return 'Kan niet'
         
-        #elif other == inverse_of(self, self.p):
-            #return Punt() #punt bij zn inverse optellen geeft oneindig
         elif self.x == other.x and self.y != other.y:
-            return Punt() #twee punten die boven elkaar liggen optellen geeft oneindig
+            return Punt() #twee punten die boven elkaar liggen (elkaars inverse) optellen geeft oneindig
         elif self == other and self.y == 0:
             return Punt() #raaklijn recht omhoog voor punt bij zichzelf optellen geeft oneindig
 
