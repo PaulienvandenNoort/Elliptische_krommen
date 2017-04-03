@@ -147,3 +147,105 @@ def BruteForce(p=Punt(),q=Punt()):
         pnext = p.vermenigvuldigen(i)
         if pnext==q:
             return 'q = '+str(i)+' keer p'
+        
+class Montgomery_curve:
+
+    def __init__(self,a,b,p):
+        self.a = a
+        self.b = b
+        self.p = p
+
+    def __str__(self):
+        if self.b*(self.a**2-4)!=0:
+            return 'E: ' + str(self.b) + 'y^2 = x^3 + ' + str(self.a) + 'x^2 + x'
+        else:
+            return 'Kan niet'
+
+    def __eq__(self,other):
+        return self.a == other.a and self.b == other.b and self.p == other.p
+
+class Punt_op_Montgomery_curve:
+
+    def __init__(self,x=[],y=[],c=Montgomery_curve(0,0,2)):
+        self.x = x #voer het punt oneindig in als Punt()
+        self.y = y
+        self.E = c
+        self.a = c.a
+        self.b = c.b
+        self.p = c.p
+
+    def __str__(self):
+        if self.x==[] and self.y==[]:
+            return 'O'
+        return '(' + str(self.x) + ',' + str(self.y)+ ')'
+
+    def __add__(self,other):
+        return self.optellen(other)
+
+    def __sub__(self,other):
+        return self.optellen(other.negatie())
+
+    def __neg__(self):
+        return self.negatie()
+
+    def __mul__(self,n):
+        return self.vermenigvuldigen(n)
+
+    def __rmul__(self,n):
+        return self.vermenigvuldigen(n)
+
+    def __eq__(self,other):
+        return self.x==other.x and self.y==other.y and self.E==other.E
+
+    def optellen(self,other):
+        if self.x==[] and self.y==[]:
+            return other
+        elif other.x==[] and other.y==[]:
+            return self #punt bij oneindig optellen geeft punt zelf
+        
+        elif self.E != other.E:
+            return 'Kan niet'
+        
+        elif self.x == other.x and self.y != other.y:
+            return Punt() #twee punten die boven elkaar liggen optellen geeft oneindig
+        elif self == other and self.y == 0:
+            return Punt() #raaklijn recht omhoog voor punt bij zichzelf optellen geeft oneindig
+
+        else:
+            
+            if self == other:
+                s = (3*self.x**2+2*self.a*self.x+1)*inverse_of(2*self.b*self.y,self.p) #rc Montgomery kromme
+                xr = (self.b*s**2 - self.a - 2*self.x) % self.p #afleiden door oplossingen te ontbinden in factoren
+                yr = (self.y + (xr - self.x)*(3*self.x**2 + 2*self.a*self.x + 1)*inverse_of(2*self.b*self.y,self.p)) % self.p
+                #yr is rc*x-afstand tussen punt r en het oorspronkelijke punt + y van het oorspronkelijke punt
+
+                antwoord = -Punt(xr,yr,self.E)
+            else:
+                s = (other.y - self.y)* inverse_of((other.x - self.x),self.p)  #rc van de lijn door de twee punten
+                xr = (self.b*s**2 - self.a - self.x - other.x) % self.p #ontbinden in factoren
+                yr = ((2*self.x+other.x+self.a)*s - self.b*s**3 - self.y) % self.p
+                #yr is berekend door xr in de lijn y = s*x + m in te vullen, m = self.y - s*self.x
+
+                antwoord = Punt(xr,yr,self.E) #de negatie is al meegenomen
+
+            return antwoord
+
+    def negatie(self):
+        new = copy.deepcopy(self)
+        new.y = -new.y % self.p
+        return new
+
+    def vermenigvuldigen(self,n):
+        if self.E != other.E:
+            return 'Kan niet'
+        else:
+            antwoord = self
+            if n == 0:
+                return 0
+            if n == 1:
+                return antwoord
+            else:
+                for i in range(n-1):
+                    antwoord += self
+            
+            return antwoord 
