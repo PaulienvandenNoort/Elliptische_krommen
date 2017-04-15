@@ -2,6 +2,8 @@ import math
 import copy
 
 class ElliptischeKromme:
+    """Definieert een elliptische kromme van de vorm y^2 = x^3 + ax + b en vraagt het
+    priemgetal van het lichaam waarop de kromme gedefinieerd is."""
 
     def __init__(self,a,b,p):
         self.a = a
@@ -19,14 +21,19 @@ class ElliptischeKromme:
             
 
 class Punt:
-
+    """Definieert een punt op de kromme door de x en y coördinaat van het punt en de 
+    bijbehorende elliptische kromme te vragen. Verder worden de berekeningen die 
+    gedaan kunnen worden met elliptische krommen hieronder gedefinieerd."""
+    
     def __init__(self,x=[],y=[],c=ElliptischeKromme(0,0,2)):
-        self.x = x #voer het punt oneindig in als Punt()
+        self.x = x
         self.y = y
         self.E = c
         self.a = c.a
         self.b = c.b
         self.p = c.p
+        
+    #voer het punt oneindig in als Punt()
 
     def __str__(self):
         if self.x==[] and self.y==[]:
@@ -52,28 +59,32 @@ class Punt:
         return self.x==other.x and self.y==other.y and self.E==other.E
 
     def optellen(self,other):
+        
+        # punt bij oneindig optellen geeft punt zelf:
         if self.x==[] and self.y==[]:
             return other
         elif other.x==[] and other.y==[]:
-            return self #punt bij oneindig optellen geeft punt zelf
+            return self
         
         elif self.E != other.E:
             return 'Kan niet'
         
+        #twee punten die boven elkaar liggen (elkaars inverse) optellen geeft oneindig:
         elif self.x == other.x and self.y != other.y:
-            return Punt() #twee punten die boven elkaar liggen (elkaars inverse) optellen geeft oneindig
+            return Punt()
+        #raaklijn recht omhoog voor punt bij zichzelf optellen geeft oneindig:
         elif self == other and self.y == 0:
-            return Punt() #raaklijn recht omhoog voor punt bij zichzelf optellen geeft oneindig
-
+            return Punt()
+        
+        # afleiding van onderstaande formules staat in het verslag:
         else:
-            
             if self == other:
-                s = (3*self.x**2+self.a)* inverse_of(2*self.y,self.p) #afgeleide van de elliptische kromme
+                s = (3*self.x**2+self.a)* inverse_of(2*self.y,self.p)
             else:
-                s = (self.y - other.y)* inverse_of((self.x - other.x),self.p)  #rc van de lijn door de twee punten
+                s = (self.y - other.y)* inverse_of((self.x - other.x),self.p)
 
-            xr = (s**2 - self.x - other.x) % self.p #afleiding in mn notities
-            yr = (self.y+s*(xr-self.x)) % self.p #rc*x-afstand tussen p en r+punt p         
+            xr = (s**2 - self.x - other.x) % self.p
+            yr = (self.y+s*(xr-self.x)) % self.p        
 
             antwoord = -Punt(xr,yr,self.E)
 
@@ -96,10 +107,7 @@ class Punt:
             
             return antwoord
 
-    
-#rc = (other.y - self.y)/(other.x - self.x)
-        #bp = self.y - rc * self.x    
-    
+        
 def extended_euclidean_algorithm(a, b):
     """
     Returns a three-tuple (gcd, x, y) such that
