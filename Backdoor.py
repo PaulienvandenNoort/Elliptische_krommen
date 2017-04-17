@@ -96,9 +96,7 @@ class Punt:
             return (2*self).binkeer(n // 2)
         
     
-#rc = (other.y - self.y)/(other.x - self.x)
 
-        #bp = self.y - rc * self.x
         
 def extended_euclidean_algorithm(a, b):
     """
@@ -106,8 +104,7 @@ def extended_euclidean_algorithm(a, b):
     a * x + b * y == gcd, where gcd is the greatest
     common divisor of a and b.
     This function implements the extended Euclidean
-    algorithm and runs in O(log b) in the worst case.
-    """
+    algorithm and runs in O(log b) in the worst case.    """
     s, old_s = 0, 1
     t, old_t = 1, 0
     r, old_r = b, a
@@ -117,7 +114,7 @@ def extended_euclidean_algorithm(a, b):
         old_s, s = s, old_s - quotient * s
         old_t, t = t, old_t - quotient * t
     return old_r, old_s, old_t
-
+t
 def inverse_of(n, p):
     """
     Returns the multiplicative inverse of
@@ -141,16 +138,15 @@ import random
 import os
 
 # Normale werking van de generator Dual_EC_DRBG is als volgt
-# P en Q nog maken, dit zijn randomdingen voor het voorbeeld
 
 def PRNG(n,d):
     Q = Punt(3,4,ElliptischeKromme(1,-1,104729))
     P = Q.binkeer(d)
     i0 = os.urandom(32)
 
-    lijstinput = n*[0] #lijst van itjes in bytes
+    lijstinput = n*[0] #lijst van i'tjes in bytes
     lijstinput[0] = int.from_bytes(i0, byteorder='big')
-    lijstoutput = (n-1)*[0] #lijst van otjes in bytes
+    lijstoutput = (n-1)*[0] #lijst van o'tjes in bytes
     
     for i in range(1,n):
         #Byteorder moet nog ff checken
@@ -190,28 +186,3 @@ def PRNG_backdoor(n=int(),d=int(),A=Punt()):
         lijstoutput[i] = phi.to_bytes((phi.bit_length() + 7) // 8, byteorder='big')
 
     return lijstoutput
-
-    
-
-    
-
-'''i1 = i0*P.x
-i2 = i1*P.x
-
-o0 = i1*Q.x
-o1 = i2*Q.x
-
-# Hoe alle output achterhaald kan worden via een backdoor
-# Getal A en d zet ik nu even als invoer; ze zijn immers bekend bij degene die
-#       toegang heeft tot de backdoor.
-# Voor input neem ik nu k en voor output m
-
-A = input()
-d = input()
-
-k2 = d*A    # ofwel k1*P.x
-m0 = A      # ofwel k1*Q.x
-m1 = i2*Q.x
-
-if o1 == m1:
-    print('The backdoor gives the right result')'''
