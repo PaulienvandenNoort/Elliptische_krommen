@@ -114,7 +114,7 @@ def extended_euclidean_algorithm(a, b):
         old_s, s = s, old_s - quotient * s
         old_t, t = t, old_t - quotient * t
     return old_r, old_s, old_t
-t
+
 def inverse_of(n, p):
     """
     Returns the multiplicative inverse of
@@ -149,14 +149,12 @@ def PRNG(n,d):
     lijstoutput = (n-1)*[0] #lijst van o'tjes in bytes
     
     for i in range(1,n):
-        #Byteorder moet nog ff checken
-        
         lijstinput[i] = (P.binkeer(lijstinput[i-1])).x
 
     for i in range(n-1):
         phi = (Q.binkeer(lijstinput[i+1])).x
         #lijstoutput[i] = phi
-        lijstoutput[i]= phi.to_bytes((phi.bit_length() + 7) // 8, byteorder='big')[-30:] #Hier moeten nog de eerste 2 bytes vanaf
+        lijstoutput[i]= phi.to_bytes((phi.bit_length() + 7) // 8, byteorder='big')[-30:]
 
     print(lijstoutput)
     return Q.binkeer(lijstinput[1])
@@ -173,7 +171,7 @@ def PRNG_backdoor(n=int(),d=int(),A=Punt()):
     i1P=A.binkeer(d)
     lijstinput[0] = 0
     lijstinput[1] = 0
-    lijstinput[2] = i1P.x #integer
+    lijstinput[2] = i1P.x
     #lijstoutput[0] = A.x
     lijstoutput[0] = (A.x).to_bytes(((A.x).bit_length() + 7) // 8, byteorder='big')
 
